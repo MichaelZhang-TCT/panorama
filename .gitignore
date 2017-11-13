@@ -4,5 +4,14 @@
 *.swm
 *.swp
 
+# images
+*.jpg
+
+# data
+data
+
+# log
+log
+
 # build
 _build
