@@ -1,8 +1,14 @@
-# OpenPano
+# Panorama
+
+This repo is the optimization version based on [OpenPano](https://github.com/ppwwyyxx/OpenPano).
 
 ## Getting started
 
+Prequisites:
+
 - OS: Ubuntu 14.04
+
+How it runs:
 
 ```
 $ sudo apt-get install libeigen3-dev
