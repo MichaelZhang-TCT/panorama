@@ -11,8 +11,13 @@ $ cmake ..
 $ make
 $ cd ..
 $ cp src/config.cfg ./
+
+$ mkdir data
+$ # download example-data.tgz
 $ ./build/src/image-stitching <img1> <img2> <img3> ...
 ```
+
+
 
 ![cmu0](results/CMU0-all.jpg)
 
