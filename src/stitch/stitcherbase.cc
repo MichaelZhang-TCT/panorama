@@ -8,9 +8,12 @@ namespace pano {
 
 void StitcherBase::calc_feature() {
   GuardedTimer tm("calc_feature()");
+
+  // reset the size of feats and (sift) keypoints for all input images
   feats.resize(imgs.size());
   keypoints.resize(imgs.size());
   // detect feature
+  // assign one thread per image
 #pragma omp parallel for schedule(dynamic)
   REP(k, (int)imgs.size()) {
     imgs[k].load();

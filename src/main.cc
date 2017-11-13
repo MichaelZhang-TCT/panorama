@@ -212,8 +212,10 @@ void work(int argc, char* argv[]) {
  *      imgs[i-1] = read_img(argv[i]);
  *  }
  */
+	// append the image paths into imgs
 	vector<string> imgs;
 	REPL(i, 1, argc) imgs.emplace_back(argv[i]);
+
 	Mat32f res;
 	if (CYLINDER) {
 		CylinderStitcher p(move(imgs));
