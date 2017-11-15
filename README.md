@@ -7,6 +7,23 @@ This repo is the optimization version based on [OpenPano](https://github.com/ppw
 Prequisites:
 
 - OS: Ubuntu 14.04
+- OpenCV 2.4
+
+OpenCV Installation:
+
+::
+
+    $ git clone https://github.com/opencv/opencv
+    $ cd opencv
+    $ mkdir _build
+    # ref: https://www.learnopencv.com/install-opencv3-on-ubuntu/
+
+    # config cmake
+    $ cp /path/to/opencv/_build/OpenCVConfig.cmake /path/to/cmake
+    $ cp /path/to/opencv/_build/OpenCVModules.cmake /path/to/cmake
+    $ export OpenCV3_DIR=/path/to/opencv
+    # export OpenCV2_DIR=/path/to/opencv2
+
 
 How it runs:
 

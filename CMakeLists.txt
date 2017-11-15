@@ -41,4 +41,8 @@ endif()
 add_definitions(-DDEBUG)
 
 
+# opencv
+include (${CMAKE_SOURCE_DIR}/_3rdparty/opencv/_build/OpenCVConfig.cmake)
+include_directories (${OpenCV_INCLUDE_DIRS})
+
 add_subdirectory(src)
