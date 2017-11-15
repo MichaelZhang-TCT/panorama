@@ -5,10 +5,14 @@
 #pragma once
 #include <memory>
 #include <vector>
+
+#include "opencv2/imgproc/imgproc.hpp"
+
 #include "lib/mat.h"
 #include "lib/utils.hh"
 #include "lib/timer.hh"
 #include "common/common.hh"
+
 namespace pano {
 
 class GaussCache {
@@ -34,9 +38,18 @@ class GaussianBlur {
 			Mat<T> ret(h, w, img.channels());
 
 			const int kw = gcache.kw;
-			const int center = kw / 2;
-			float * kernel = gcache.kernel;
+			// const int center = kw / 2;
+			// float * kernel = gcache.kernel;
 
+			cv::Mat cv_img(img.rows(), img.cols(), CV_32F);
+			std::memcpy(cv_img.data, img.ptr(0), img.rows()*img.cols()*img.channels());
+			cv::Mat cv_ret(h, w, CV_32F);
+			for (int i = 1; i < kw; i = i+2)
+			{
+				cv::GaussianBlur(cv_img, cv_ret, cv::Size(i, i), sigma, sigma);
+			}
+			std::memcpy(ret.ptr(0), cv_ret.data, h*w*img.channels()*sizeof(T));
+/*
 			std::vector<T> cur_line_mem(center * 2 + std::max(w, h), 0);
 			T *cur_line = cur_line_mem.data() + center;
 
@@ -88,6 +101,7 @@ class GaussianBlur {
 					*(dest ++) = tmp;
 				}
 			}
+*/
 			return ret;
 		}
 };
