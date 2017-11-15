@@ -21,10 +21,10 @@ file(GLOB SOURCES feature/*.cc stitch/*.cc lib/*.cc)
 
 
 add_library(openpano ${SOURCES})	# TODO shared?
-target_link_libraries(openpano ${JPEG_LIBRARY} lodepng Eigen3::Eigen)
+target_link_libraries(openpano ${JPEG_LIBRARY} lodepng Eigen3::Eigen ${OpenCV_LIBS})
 
 add_executable(image-stitching main.cc)
-target_link_libraries(image-stitching openpano)
+target_link_libraries(image-stitching openpano ${OpenCV_LIBS})
 
 if (NOT JPEG_FOUND)
 	target_compile_definitions(openpano PUBLIC DISABLE_JPEG)
