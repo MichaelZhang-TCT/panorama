@@ -49,6 +49,8 @@ class Mat {
 				int cols() const { return m_cols; }
 				int channels() const { return m_channels; }
 				int pixels() const { return m_rows * m_cols; }
+				T * data() const {return m_data.get(); }
+				void data_reset (T * data) { memcpy(m_data.get(), data, m_rows*m_cols*m_channels*sizeof(T)); }
 
 		protected:
 				int m_rows, m_cols;

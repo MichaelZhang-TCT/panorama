@@ -38,15 +38,9 @@ class GaussianBlur {
 			Mat<T> ret(h, w, img.channels());
 
 			const int kw = gcache.kw;
-			//const int center = kw / 2;
-			//float * kernel = gcache.kernel;
+			const int center = kw / 2;
+			float * kernel = gcache.kernel;
 
-			cv::Mat cv_img(img.rows(), img.cols(), CV_32FC1, cv::Scalar::all(0));
-			std::memcpy(cv_img.ptr(0), img.ptr(0), img.rows()*img.cols()*img.channels()*sizeof(T));
-			cv::Mat cv_ret(h, w, CV_32FC1, cv::Scalar::all(0));
-			cv::GaussianBlur(cv_img, cv_ret, cv::Size(kw, kw), sigma, sigma);
-			std::memcpy(ret.ptr(0), cv_ret.ptr(0), img.rows()*img.cols()*img.channels()*sizeof(T));
-/*
 			std::vector<T> cur_line_mem(center * 2 + std::max(w, h), 0);
 			T *cur_line = cur_line_mem.data() + center;
 
@@ -98,10 +92,36 @@ class GaussianBlur {
 					*(dest ++) = tmp;
 				}
 			}
-*/
 			return ret;
 		}
 };
+
+
+class GaussianOptBlur {
+	float sigma;
+	GaussCache gcache;
+	public:
+		GaussianOptBlur(float sigma): sigma(sigma), gcache(sigma) {}
+
+		// TODO faster convolution
+		template <typename T>
+		Mat<T> blur(const Mat<T>& img) const {
+			m_assert(img.channels() == 1);
+			TotalTimer tm("gaussianblur");
+			const int w = img.width(), h = img.height();
+			Mat<T> ret(h, w, img.channels());
+
+			const int kw = gcache.kw;
+
+			cv::Mat cv_img(h, w, CV_32FC1, img.data());
+			cv::Mat cv_ret(h, w, CV_32FC1, cv::Scalar::all(0));
+			cv::GaussianBlur(cv_img, cv_ret, cv::Size(kw, kw), sigma, 0);
+			ret.data_reset((T*)cv_ret.data);
+
+			return ret;
+		}
+};
+
 
 class MultiScaleGaussianBlur {
 	std::vector<GaussianBlur> gauss;		// size = nscale - 1
