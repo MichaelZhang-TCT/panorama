@@ -36,7 +36,7 @@ if(MSVC)
 	# /Zo makes debug symbol in pdb in release mode in VS2015
 	add_definitions(/fp:fast /GR- /Os /Zo /arch:AVX /openmp)
 else()
-	add_definitions(-O3 -march=native -Wall -Wextra)
+	add_definitions(-O3 -march=native -Wall -Wextra -g)
 endif()
 add_definitions(-DDEBUG)
 

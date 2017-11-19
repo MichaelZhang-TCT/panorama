@@ -44,6 +44,10 @@ class GaussianBlur {
 			std::vector<T> cur_line_mem(center * 2 + std::max(w, h), 0);
 			T *cur_line = cur_line_mem.data() + center;
 
+			std::cout << "(w, h, center) " << w << ", " << h << ", " << center << std::endl;
+			for (int i = 0; i < kw*kw; ++i)
+				std::cout << kernel[i] << std::endl;
+
 			// apply to columns
 			REP(j, w){
 				const T* src = img.ptr(0, j);
@@ -96,7 +100,6 @@ class GaussianBlur {
 		}
 };
 
-
 class GaussianOptBlur {
 	float sigma;
 	GaussCache gcache;
@@ -113,15 +116,16 @@ class GaussianOptBlur {
 
 			const int kw = gcache.kw;
 
-			cv::Mat cv_img(h, w, CV_32FC1, img.data());
+			cv::Mat cv_img(h, w, CV_32FC1, (void*)img.ptr(0));
 			cv::Mat cv_ret(h, w, CV_32FC1, cv::Scalar::all(0));
-			cv::GaussianBlur(cv_img, cv_ret, cv::Size(kw, kw), sigma, 0);
-			ret.data_reset((T*)cv_ret.data);
+			cv::GaussianBlur(cv_img, cv_ret, cv::Size(kw, kw), sigma, sigma);
+			// ret.data_reset((T*)cv_ret.data);
+			std::cout << img.channels() << ' ' << sizeof(T) << std::endl;
+			std::memcpy(ret.ptr(0), cv_ret.data, h*w*sizeof(T));
 
 			return ret;
 		}
 };
-
 
 class MultiScaleGaussianBlur {
 	std::vector<GaussianBlur> gauss;		// size = nscale - 1
