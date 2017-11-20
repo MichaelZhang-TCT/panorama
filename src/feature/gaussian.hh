@@ -44,10 +44,6 @@ class GaussianBlur {
 			std::vector<T> cur_line_mem(center * 2 + std::max(w, h), 0);
 			T *cur_line = cur_line_mem.data() + center;
 
-			std::cout << "(w, h, center) " << w << ", " << h << ", " << center << std::endl;
-			for (int i = 0; i < kw*kw; ++i)
-				std::cout << kernel[i] << std::endl;
-
 			// apply to columns
 			REP(j, w){
 				const T* src = img.ptr(0, j);

@@ -26,6 +26,9 @@ target_link_libraries(openpano ${JPEG_LIBRARY} lodepng Eigen3::Eigen ${OpenCV_LI
 add_executable(image-stitching main.cc)
 target_link_libraries(image-stitching openpano ${OpenCV_LIBS})
 
+add_executable(tests tests.cc)
+target_link_libraries(tests openpano)
+
 if (NOT JPEG_FOUND)
 	target_compile_definitions(openpano PUBLIC DISABLE_JPEG)
 	target_compile_definitions(image-stitching PUBLIC DISABLE_JPEG)
