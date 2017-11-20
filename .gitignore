@@ -21,3 +21,6 @@ _3rdparty
 
 # config
 config.cfg
+
+# debug
+core

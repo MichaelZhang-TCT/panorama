@@ -88,10 +88,13 @@ class GaussianBlur {
 				REP(j, w) {
 					T tmp{0};
 					for (int k = -center; k <= center; k ++)
+					{
 						tmp += cur_line[j + k] * kernel[k];
+					}
 					*(dest ++) = tmp;
 				}
 			}
+
 			return ret;
 		}
 };
