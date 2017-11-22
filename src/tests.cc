@@ -26,8 +26,8 @@ void image_print(Mat<T> img)
 
 int main() 
 {
-	int height = 5;
-	int width = 6;
+	int height = 3;
+	int width = 4;
 	int channels = 1;
 
 	Mat<float> img(height, width, channels);
