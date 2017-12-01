@@ -144,7 +144,7 @@ void MultiBandBlender::update_weight_map() {
 
 void MultiBandBlender::create_next_level(int level) {
 	TOTAL_FUNC_TIMER;
-	GaussianBlur blurer(sqrt(level * 2 + 1.0) * 4);	// TODO size
+	GaussianBlurFast blurer(sqrt(level * 2 + 1.0) * 4);	// TODO size
 #pragma omp parallel for schedule(dynamic)
 	REP(i, (int)images.size())
 		next_lvl_images[i].img = blurer.blur(images[i].img);

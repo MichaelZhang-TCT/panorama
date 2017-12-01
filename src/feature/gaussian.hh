@@ -12,6 +12,7 @@
 #include "lib/utils.hh"
 #include "lib/timer.hh"
 #include "common/common.hh"
+#include "feature/border.hh"
 
 namespace pano {
 
@@ -22,6 +23,16 @@ class GaussCache {
 		int kw;
 		GaussCache(float sigma);
 };
+
+
+class GaussCacheFull {
+	public:
+		std::unique_ptr<float, std::default_delete<float[]>> kernel_buf;
+		float* kernel;
+		int kw;
+		GaussCacheFull(float sigma);
+};
+
 
 class GaussianBlur {
 	float sigma;
@@ -140,6 +151,58 @@ class MultiScaleGaussianBlur {
 
 	Mat32f blur(const Mat32f& img, int n) const
 	{ return gauss[n - 1].blur(img); }
+};
+
+
+class GaussianBlurFast {
+	float sigma;
+	GaussCacheFull gcache;
+	public:
+		GaussianBlurFast(float sigma): sigma(sigma), gcache(sigma) {}
+
+		// TODO faster convolution
+		template <typename T>
+		Mat<T> blur(const Mat<T>& img) const {
+			m_assert(img.channels() == 1);
+			const int w = img.width(), h = img.height();
+			Mat<T> ret(h, w, img.channels());
+
+			const int kw = gcache.kw;
+			const int center = kw / 2;
+
+			T * h_img = (T*)malloc(sizeof(T)*(w+2*center)*(h+2*center));
+			border_padding(h_img, img.ptr(0), w, h, center);
+			const int h_img_width = w + 2 * center;
+			const int h_img_height = h + 2 * center;
+
+#pragma omp parallel for schedule(dynamic)
+			for (int i = 0; i < w*h; ++i) {
+				const int dst_width = i % w;
+				const int dst_height = (i / w) % h;
+				const int n = i / w / h;
+
+				int hstart = dst_height;
+				int wstart = dst_width;
+				int hend = std::min(hstart + kw, h_img_height);
+				int wend = std::min(wstart + kw, h_img_width);
+				hstart = std::max(hstart, 0);
+				wstart = std::max(wstart, 0);
+				hend = std::min(hend, h_img_height);
+				wend = std::min(wend, h_img_width);
+				T tmp = 0;
+				int counter = 0;
+				const T * in_slice = h_img + n * h_img_height * h_img_width;
+				for (int h = hstart; h < hend; ++h) {
+					for (int w = wstart; w < wend; ++w) {
+						tmp += in_slice[h * h_img_width + w] * gcache.kernel_buf.get()[counter];
+						counter++;
+					}
+				}
+				ret.data()[i] = tmp;
+			} 
+
+			return ret;
+		}
 };
 
 }
