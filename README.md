@@ -40,9 +40,10 @@ $ # download example-data.tgz
 $ ./build/src/image-stitching <img1> <img2> <img3> ...
 ```
 
+## Updates
 
+- created GaussianBlurFast with OpenMP with new border padding.
 
-![cmu0](results/CMU0-all.jpg)
 
 ## Introduction
 
