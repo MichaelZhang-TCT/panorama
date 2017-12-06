@@ -19,6 +19,7 @@ struct ImageRef {
   //ImageRef(const ImageRef& ) = delete;  // TODO make it work
   ~ImageRef() { if (img) delete img; }
 
+  // Reading image from a url
   void load() {
     if (img) return;
     img = new Mat32f{read_img(fname.c_str())};

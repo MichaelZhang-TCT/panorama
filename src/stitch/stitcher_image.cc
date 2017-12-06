@@ -122,6 +122,7 @@ Mat32f ConnectedImages::blend() const {
   Coor size(size_d.x, size_d.y);
   print_debug("Final Image Size: (%d, %d)\n", size.x, size.y);
 
+  // lambda function
   auto scale_coor_to_img_coor = [&](Vec2D v) {
     v = (v - proj_range.min) / resolution;
     return Coor(v.x, v.y);
