@@ -16,6 +16,11 @@ void MultiBandBlender::add_image(
 	target_size.update_max(bottom_right);
 }
 
+
+/*
+ * ImageToBlend: {weighted_image, meta_images}
+ * MetaImage: {range, mask}
+ */
 void MultiBandBlender::create_first_level() {
 	GUARDED_FUNC_TIMER;
 
