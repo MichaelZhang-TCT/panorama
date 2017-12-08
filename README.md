@@ -42,8 +42,8 @@ $ ./build/src/image-stitching <img1> <img2> <img3> ...
 
 ## Updates
 
-- created GaussianBlurFast with OpenMP with new border padding.
-
+- created GaussianBlurFast with OpenMP with new border padding;
+- created tests for testing single class.
 
 ## Introduction
 

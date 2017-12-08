@@ -134,6 +134,8 @@ void MultiBandBlender::update_weight_map() {
 		float max = 0.f;
 		float* maxp = nullptr;
 		for (auto& img : images) {
+			// TODO: why all w = 0??
+                        // NOTE: if image.meta.range, w = 0, get the maxw
 			if (img.meta.range.contain(i, j)) {
 				float& w = img.weight_on_target(j, i);
 				if (w > max) {
