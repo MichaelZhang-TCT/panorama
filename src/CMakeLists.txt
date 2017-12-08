@@ -38,6 +38,9 @@ target_link_libraries(test_lib_geometry openpano)
 add_executable(test_feature_gaussian tests/test_feature_gaussian.cc)
 target_link_libraries(test_feature_gaussian openpano)
 
+add_executable(test_stitch_multiband tests/test_stitch_multiband.cc)
+target_link_libraries(test_stitch_multiband openpano)
+
 # ---------------------------------------------------------------------------------------------
 
 if (NOT JPEG_FOUND)
